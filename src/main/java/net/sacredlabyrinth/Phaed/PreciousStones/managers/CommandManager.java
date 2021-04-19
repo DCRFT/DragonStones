@@ -100,7 +100,7 @@ public final class CommandManager implements CommandExecutor {
                         }
                         return true;
                     } else if (cmd.equalsIgnoreCase(ChatHelper.format("commandAllow")) && plugin.getPermissionsManager().has(player, "preciousstones.whitelist.allow") && hasplayer) {
-						if (args.length >= 2) {
+						if (args.length >= 1) {
 							Field field = plugin.getForceFieldManager().getOneOwnedField(block, player, FieldFlag.ALL);
 
 							if (field != null) {
@@ -125,15 +125,6 @@ public final class CommandManager implements CommandExecutor {
 
 								boolean isGuest = false;
 								String playerName = args[0];
-								String member = args[1];
-								if (member.equalsIgnoreCase("guest") || member.equalsIgnoreCase("g")) {
-									isGuest = true;
-								} else if (member.equalsIgnoreCase("coowner") || member.equalsIgnoreCase("co") || member.equalsIgnoreCase("c")) {
-									isGuest = false;
-								} else {
-									ChatHelper.send(sender, "incorrectMemberTypeAllow", playerName);
-									return true;
-								}
 
 								Player allowed = Bukkit.getServer().getPlayerExact(playerName);
 
