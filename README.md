@@ -1,7 +1,7 @@
 PreciousStones
 ==========
 
-Self-service protection for PVP Minecraft servers
+Self-service protection for PVP Minecraft servers. A WIP fork with removed unnecessary stuff intended to use for DragonCraft Minecraft server.
 
 [![Build Status](https://travis-ci.org/marcelo-mason/PreciousStones.svg?branch=master)](https://travis-ci.org/marcelo-mason/PreciousStones)
 [![Download](https://img.shields.io/badge/snapshot-download-blue.svg)](http://jenkins.elmakers.com/job/PreciousStones/)
