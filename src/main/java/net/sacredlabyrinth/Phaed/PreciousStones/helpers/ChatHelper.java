@@ -6,6 +6,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -13,6 +16,9 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static net.md_5.bungee.api.chat.TextComponent.fromLegacyText;
+
 
 /**
  * @author phaed
@@ -284,7 +290,191 @@ public class ChatHelper {
     public void sendBlock(CommandSender sender) {
         sendBlock(sender, null);
     }
+    
+    public boolean sendBlockNoPad(CommandSender sender, int amount) {
+        if (sender == null) {
+            return false;
+        }
 
+        if (rows.isEmpty()) {
+            return false;
+        }
+
+        if (!(sender instanceof Player)) {
+            amount = 999;
+        }
+
+        // if no column sizes provided them
+        // make some up based on the data
+
+        if (columnSizes.isEmpty()) {
+            // generate columns sizes
+
+            int col_count = rows.get(0).length;
+
+            if (col_count > 1) {
+                for (int i = 0; i < col_count; i++) {
+                    // add custom column spacing if specified
+
+                    int spacing = colspacing;
+
+                    if (columnSpaces.size() >= (i + 1)) {
+                        spacing = columnSpaces.get(i);
+                    }
+
+                    columnSizes.add(getMaxWidth(i) + spacing);
+                }
+            } else {
+                columnSizes.add((double) lineLength);
+            }
+        }
+
+        // size up all sections
+
+        for (int i = 0; i < amount; i++) {
+            if (rows.isEmpty()) {
+                continue;
+            }
+
+            String rowstring = "";
+            String row[] = rows.pollFirst();
+
+            for (int sid = 0; sid < row.length; sid++) {
+                String section = row[sid];
+                double colsize = (columnSizes.size() >= (sid + 1)) ? columnSizes.get(sid) : 0;
+                String align = (columnAlignments.size() >= (sid + 1)) ? columnAlignments.get(sid) : "l";
+
+                if (align.equalsIgnoreCase("r")) {
+                    if (msgLength(section) > colsize) {
+                        rowstring += section;
+                    } else if (msgLength(section) < colsize) {
+                        rowstring += section;
+                    }
+                } else if (align.equalsIgnoreCase("l")) {
+                    if (msgLength(section) > colsize) {
+                        rowstring += section;
+                    } else if (msgLength(section) < colsize) {
+                        rowstring += section;
+                    }
+                } else if (align.equalsIgnoreCase("c")) {
+                    if (msgLength(section) > colsize) {
+                        rowstring += section;
+                    } else if (msgLength(section) < colsize) {
+                        rowstring += section;
+                    }
+                } else if (align.equalsIgnoreCase("w")) {
+                    if (msgLength(section) > colsize) {
+                        rowstring += section;
+                    } else if (msgLength(section) < colsize) {
+                        rowstring += section;
+                    }
+                }
+            }
+
+            String msg = rowstring, lineLength;
+
+            if (color.length() > 0) {
+                msg = color + msg;
+            }
+
+            sender.sendMessage(msg);
+        }
+
+        return !rows.isEmpty();
+    }
+
+    /**
+     * @param sender
+     * @param prefix
+     */
+    public void sendBlockNoPad(CommandSender sender, String prefix) {
+        if (sender == null) {
+            return;
+        }
+
+        if (rows.isEmpty()) {
+            return;
+        }
+
+        boolean prefix_used = prefix == null;
+
+        String empty_prefix = ChatHelper.makeEmpty(prefix);
+
+        // if no column sizes provided them
+        // make some up based on the data
+
+        if (columnSizes.isEmpty()) {
+            // generate columns sizes
+
+            int col_count = rows.get(0).length;
+
+            if (col_count > 1) {
+                for (int i = 0; i < col_count; i++) {
+                    // add custom column spacing if specified
+
+                    int spacing = colspacing;
+
+                    if (columnSpaces.size() >= (i + 1)) {
+                        spacing = columnSpaces.get(i);
+                    }
+
+                    columnSizes.add(getMaxWidth(i) + spacing);
+                }
+            } else {
+                columnSizes.add((double) lineLength);
+            }
+        }
+
+        // size up all sections
+
+        for (String[] row : rows) {
+            String rowstring = "";
+
+            for (int sid = 0; sid < row.length; sid++) {
+                String section = row[sid];
+                double colsize = (columnSizes.size() >= (sid + 1)) ? columnSizes.get(sid) : 0;
+                String align = (columnAlignments.size() >= (sid + 1)) ? columnAlignments.get(sid) : "l";
+
+                if (align.equalsIgnoreCase("r")) {
+                    if (msgLength(section) > colsize) {
+                        rowstring += cropLeftToFit(section, colsize);
+                    } else if (msgLength(section) < colsize) {
+                        rowstring += padLeftToFit(section, colsize);
+                    }
+                } else if (align.equalsIgnoreCase("l")) {
+                    if (msgLength(section) > colsize) {
+                        rowstring += cropRightToFit(section, colsize);
+                    } else if (msgLength(section) < colsize) {
+                        rowstring += padRightToFit(section, colsize);
+                    }
+                } else if (align.equalsIgnoreCase("c")) {
+                    if (msgLength(section) > colsize) {
+                        rowstring += cropRightToFit(section, colsize);
+                    } else if (msgLength(section) < colsize) {
+                        rowstring += centerInLineOf(section, colsize);
+                    }
+                }
+            }
+
+            String msg = cropRightToFit((prefix_used ? empty_prefix : prefix) + " " + rowstring, lineLength);
+
+            if (color.length() > 0) {
+                msg = color + msg;
+            }
+
+            sender.sendMessage(msg);
+
+            prefix_used = true;
+        }
+    }
+
+    /**
+     * @param sender
+     */
+    public void sendBlockNoPad(CommandSender sender) {
+        sendBlockNoPad(sender, null);
+    }
+    
     /**
      * @param col
      * @return
@@ -616,11 +806,7 @@ public class ChatHelper {
         if (player != null) {
             msg = format(msg, args);
 
-            String[] message = colorize(wordWrap(msg, 0));
-
-            for (String out : message) {
-                player.sendMessage(out);
-            }
+                player.sendMessage(msg);
         }
     }
 
@@ -637,11 +823,46 @@ public class ChatHelper {
 
         msg = format(msg, args);
 
+            receiver.sendMessage(msg);
+    }
+
+    @SuppressWarnings("deprecation")
+    public static void sendActionBar(String playerName, String msg, Object... args) {
+        Player player = Bukkit.getPlayerExact(playerName);
+
+        if (player != null) {
+            msg = format(msg, args);
+
+            String[] message = colorize(wordWrap(msg, 0));
+
+            for (String out : message) {
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, fromLegacyText(out));
+            }
+        }
+    }
+
+    /**
+     * Outputs a message to a user
+     *
+     * @param receiver
+     * @param msg
+     */
+    public static void sendActionBar(CommandSender receiver, String msg, Object... args) {
+        if (receiver == null) {
+            return;
+        }
+        if (!(receiver instanceof Player)){
+            return;
+        }
+        Player p = (Player) receiver;
+        msg = format(msg, args);
+
         String[] message = colorize(wordWrap(msg, 0));
 
         for (String out : message) {
-            receiver.sendMessage(out);
+        	p.spigot().sendMessage(ChatMessageType.ACTION_BAR, fromLegacyText(out));
         }
+
     }
 
     /**

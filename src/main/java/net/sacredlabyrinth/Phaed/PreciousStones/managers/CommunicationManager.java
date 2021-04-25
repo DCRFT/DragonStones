@@ -1931,24 +1931,14 @@ public class CommunicationManager {
         if (field == null) {
             return;
         }
-
-        if (field.isNamed()) {
-            List<String> renters = field.getRenters();
-            if (renters != null && !renters.isEmpty()) {
-                ChatHelper.send(player, "enteringRentedNamedField", field.getName(), Helper.toMessage(renters, ", "));
-            } else {
-                ChatHelper.send(player, "enteringNamedField", field.getName());
-            }
-        } else {
             if (plugin.getSettingsManager().isShowDefaultWelcomeFarewellMessages()) {
                 List<String> renters = field.getRenters();
                 if (renters != null && !renters.isEmpty()) {
-                    ChatHelper.send(player, "enteringField", renters.get(0), field.getSettings().getTitle());
+                    ChatHelper.sendActionBar(player, "enteringField", renters.get(0), field.getSettings().getTitle());
                 } else {
-                    ChatHelper.send(player, "enteringField", field.getOwner(), field.getSettings().getTitle());
+                    ChatHelper.sendActionBar(player, "enteringField", field.getOwner(), field.getSettings().getTitle());
                 }
             }
-        }
     }
 
     /**
@@ -1959,24 +1949,14 @@ public class CommunicationManager {
         if (field == null) {
             return;
         }
-
-        if (field.isNamed()) {
-            List<String> renters = field.getRenters();
-            if (renters != null && !renters.isEmpty()) {
-                ChatHelper.send(player, "leavingRentedNamedField", field.getName(), Helper.toMessage(renters, ", "));
-            } else {
-                ChatHelper.send(player, "leavingNamedField", field.getName());
-            }
-        } else {
             if (plugin.getSettingsManager().isShowDefaultWelcomeFarewellMessages()) {
                 List<String> renters = field.getRenters();
                 if (renters != null && !renters.isEmpty()) {
-                    ChatHelper.send(player, "leavingField", renters.get(0), field.getSettings().getTitle());
+                    ChatHelper.sendActionBar(player, "leavingField", renters.get(0), field.getSettings().getTitle());
                 } else {
-                    ChatHelper.send(player, "leavingField", field.getOwner(), field.getSettings().getTitle());
+                    ChatHelper.sendActionBar(player, "leavingField", field.getOwner(), field.getSettings().getTitle());
                 }
             }
-        }
     }
 
     /**
@@ -2131,7 +2111,6 @@ public class CommunicationManager {
         ChatHelper cb = getNewChatBlock(player);
 
         for (Field field : fields) {
-            cb.addRow("", "", "");
 
             ChatColor color = field.isDisabled() ? ChatColor.RED : ChatColor.YELLOW;
 
@@ -2140,7 +2119,7 @@ public class CommunicationManager {
             }
             FieldSettings fs = field.getSettings();
 
-            cb.addRow("  " + color + ChatHelper.format("_type") + ": ", ChatColor.AQUA + fs.getTitle(), "");
+            cb.addRow("  " + color + ChatHelper.format("_type") + ": "+ ChatColor.AQUA + fs.getTitle(), "");
 
             if (fs.hasNameableFlag() && field.isNamed()) {
                 cb.addRow("  " + color + ChatHelper.format("_name") + ": ", ChatColor.AQUA + field.getName(), "");
@@ -2152,12 +2131,9 @@ public class CommunicationManager {
         }
 
         if (cb.size() > 0) {
-            cb.addRow("", "", "", "");
-
-            ChatHelper.sendBlank(player);
             ChatHelper.saySingle(player, "sepFieldInfo");
 
-            boolean more = cb.sendBlock(player, plugin.getSettingsManager().getLinesPerPage());
+            boolean more = cb.sendBlockNoPad(player, plugin.getSettingsManager().getLinesPerPage());
 
             if (more) {
                 ChatHelper.send(player, "moreNextPage");
@@ -2178,13 +2154,13 @@ public class CommunicationManager {
         ChatHelper cb = getNewChatBlock(player);
         FieldSettings fs = field.getSettings();
 
-        cb.addRow("", "", "");
+        //cb.addRow("", "", "");
 
         ChatColor color = field.isDisabled() ? ChatColor.RED : ChatColor.YELLOW;
 
         boolean showMessage = true;
 
-        cb.addRow("  " + color + ChatHelper.format("_type") + ": ", ChatColor.AQUA + fs.getTitle(), "");
+        cb.addRow(" §e» " + color + ChatHelper.format("_type") + " §e» " + ChatColor.AQUA + fs.getTitle(), "§r");
 
         if (fs.hasMetaName()) {
             List<String> lore = fs.getMetaLore();
@@ -2197,50 +2173,54 @@ public class CommunicationManager {
                 }
 
                 if (!firstAdded) {
-                    cb.addRow("  " + color + ChatHelper.format("_lore") + ": ", aLore, "");
+                    //cb.addRow("  " + color + ChatHelper.format("_lore") + ": ", aLore, "");
                     firstAdded = true;
                 } else
 
                 {
-                    cb.addRow("  ", ChatColor.AQUA + aLore, "");
+                    //cb.addRow("  ", ChatColor.AQUA + aLore, "");
                 }
             }
         }
 
         if (fs.hasNameableFlag()) {
             if (field.isNamed()) {
-                cb.addRow("  " + color + ChatHelper.format("_name") + ": ", ChatColor.AQUA + field.getName(), "");
+                cb.addRow(" §e» " + color + ChatHelper.format("_name") + " §e» " + ChatColor.YELLOW + field.getName(), "");
             } else {
-                cb.addRow("  " + color + ChatHelper.format("_name") + ": ", ChatColor.GRAY + ChatHelper.format("_none"), "");
+                //cb.addRow(" §e» " + color + ChatHelper.format("_name") + ": ", ChatColor.GRAY + ChatHelper.format("_none"), "");
             }
         }
 
         if (!field.getSettings().getDeleteIfNoPermission().isEmpty()) {
-            cb.addRow("  " + color + ChatHelper.format("_for") + ": ", ChatColor.AQUA + "" + field.getSettings().getDeleteIfNoPermission());
+            cb.addRow(" §e» " + color + ChatHelper.format("_for") + " §e» ", ChatColor.AQUA + "" + field.getSettings().getDeleteIfNoPermission());
         }
-
-        cb.addRow("  " + color + ChatHelper.format("_owner") + ": ", ChatColor.AQUA + field.getOwner(), "");
+	
+        cb.addRow(" §e» " + color + ChatHelper.format("_owner") + " §e» §c" + field.getOwner(), "", "");
 
         List<String> allowed = field.getAllowed();
         if (!allowed.isEmpty()) {
 
-            int rows = (int) Math.max(Math.ceil(allowed.size() / 2.0), 1);
-
-            for (int i = 0; i < rows; i++) {
+            String msg = null;
+            for (int i = 0; i < field.getAllowed().size(); i++) {
                 String title = "";
-
                 if (i == 0) {
-                    title = color + ChatHelper.format("_allowed") + ": ";
+                    title = color + ChatHelper.format("_allowed") + " §e» §6";
+                    msg = " §e» " + title;
                 }
-
-                cb.addRow("  " + title, ChatColor.WHITE + getAllowed(allowed, i * 2), getAllowed(allowed, (i * 2) + 1));
+                if (i+1 == field.getAllowed().size()){
+                    msg += getAllowed(allowed, i);
+                }
+                else {
+                    msg += getAllowed(allowed, i) + ", ";
+                }
             }
+            cb.addRow(msg);
         }
 
         if (field.hasFlag(FieldFlag.CUBOID)) {
-            cb.addRow("  " + color + ChatHelper.format("_dimensions") + ": ", ChatColor.AQUA + "" + (field.getMaxx() - field.getMinx() + 1) + "x" + (field.getMaxy() - field.getMiny() + 1) + "x" + (field.getMaxz() - field.getMinz() + 1), "");
+            cb.addRow(" §e» " + color + ChatHelper.format("_dimensions") + " §e» " + ChatColor.GOLD + "" + (field.getMaxx() - field.getMinx() + 1) + "x" + (field.getMaxy() - field.getMiny() + 1) + "x" + (field.getMaxz() - field.getMinz() + 1), "");
         } else {
-            cb.addRow("  " + color + ChatHelper.format("_dimensions") + ": ", ChatColor.AQUA + "" + ((field.getRadius() * 2) + 1) + "x" + field.getHeight() + "x" + ((field.getRadius() * 2) + 1), "");
+            cb.addRow(" §e» " + color + ChatHelper.format("_dimensions") + " §e» " + ChatColor.GOLD + "" + ((field.getRadius() * 2) + 1) + "x" + field.getHeight() + "x" + ((field.getRadius() * 2) + 1), "");
         }
 
         if (field.getVelocity() > 0) {
@@ -2255,67 +2235,14 @@ public class CommunicationManager {
             cb.addRow("  " + color + ChatHelper.format("_blacklistedCommands") + ": ", ChatColor.AQUA + "" + field.getListingModule().getBlacklistedCommandsList(), "");
         }
 
-        cb.addRow("  " + color + ChatHelper.format("_location") + ": ", ChatColor.AQUA + "" + field.getX() + " " + field.getY() + " " + field.getZ(), "");
+        cb.addRow(" §e» " + color + ChatHelper.format("_location") + " §e» " + ChatColor.GOLD + "" + field.getX() + " " + field.getY() + " " + field.getZ(), "");
 
-        List<FieldFlag> flags = new ArrayList<>(field.getFlagsModule().getFlags());
-        List<FieldFlag> insertedFlags = field.getFlagsModule().getInsertedFlags();
-        List<FieldFlag> disabledFlags = field.getFlagsModule().getDisabledFlags();
-
-        flags.addAll(insertedFlags);
-        flags.addAll(disabledFlags);
-
-        for (FieldFlag hid : FieldFlag.getHidden()) {
-            flags.remove(hid);
-        }
 
         boolean addedTitle = false;
 
-        for (FieldFlag flag : flags) {
-            if (flag == null) {
-                continue;
-            }
-
-            String title = "";
-
-            if (!addedTitle) {
-                title = color + ChatHelper.format("_flags") + ": ";
-                addedTitle = true;
-            }
-
-            ChatColor c = ChatColor.WHITE;
-
-            if (disabledFlags.contains(flag)) {
-                c = ChatColor.DARK_GRAY;
-            }
-
-            if (flag.isUnToggable()) {
-                c = ChatColor.AQUA;
-            }
-
-            String flagStr = Helper.toFlagStr(flag);
-
-            if (field.getSettings().isReversedFlag(flag)) {
-                flagStr = "~" + flagStr;
-            }
-
-            if (field.getSettings().isAlledFlag(flag)) {
-                flagStr = "^" + flagStr;
-            }
-
-            cb.addRow("  " + title, c + flagStr);
-        }
-
-        if (field.hasFlag(FieldFlag.POTIONS)) {
-            cb.addRow("  " + color + ChatHelper.format("_potions") + ": ", ChatColor.WHITE + field.getSettings().getPotionString(), "");
-        }
-
-        if (field.hasFlag(FieldFlag.NEUTRALIZE_POTIONS)) {
-            cb.addRow("  " + color + ChatHelper.format("_neutralizes") + ": ", ChatColor.WHITE + field.getSettings().getNeutralizePotionString(), "");
-        }
+	//flags deleted
 
         if (cb.size() > 0) {
-            cb.addRow("", "", "");
-            ChatHelper.sendBlank(player);
 
             if (field.isDisabled()) {
                 ChatHelper.saySingle(player, "sepFieldInfoDisabled");
@@ -2323,15 +2250,13 @@ public class CommunicationManager {
                 ChatHelper.saySingle(player, "sepFieldInfo");
             }
 
-            boolean more = cb.sendBlock(player, plugin.getSettingsManager().getLinesPerPage());
+            boolean more = cb.sendBlockNoPad(player, plugin.getSettingsManager().getLinesPerPage());
 
             if (more) {
-                ChatHelper.sendBlank(player);
                 ChatHelper.send(player, "moreNextPage");
             }
 
             if (field.isDisabled()) {
-                ChatHelper.sendBlank(player);
                 showMessage = false;
             }
         }
@@ -2367,7 +2292,6 @@ public class CommunicationManager {
         }
 
         if (field.getRentingModule().getLimitSeconds() > 0) {
-            cb.addRow("", "", "");
             cb.addRow("  " + ChatColor.YELLOW + ChatHelper.format("_rentingLimit") + ": ", SignHelper.secondsToPeriods(field.getRentingModule().getLimitSeconds()));
         }
 
@@ -2749,9 +2673,6 @@ public class CommunicationManager {
 
         ChatHelper cb = getNewChatBlock(sender);
 
-        cb.addRow("menuIdentifiers");
-        cb.addRow("");
-
         if (plugin.getPermissionsManager().has(player, "preciousstones.benefit.fields")) {
             cb.addRow("menu40");
         }
@@ -2854,10 +2775,6 @@ public class CommunicationManager {
 
         if (plugin.getPermissionsManager().has(player, "preciousstones.benefit.visualize") && hasPlayer) {
             cb.addRow("menu18");
-        }
-
-        if (plugin.getPermissionsManager().has(player, "preciousstones.benefit.visualize") && hasPlayer) {
-            cb.addRow("menu19");
         }
 
         if (plugin.getPermissionsManager().has(player, "preciousstones.benefit.density") && hasPlayer) {
@@ -2996,20 +2913,16 @@ public class CommunicationManager {
 
         if (cb.size() > 0) {
             if (hasPlayer) {
-                ChatHelper.sendBlank(sender);
             }
             ChatHelper.saySingle(sender, "sepMenu", plugin.getDescription().getName(), plugin.getDescription().getVersion());
-            ChatHelper.sendBlank(sender);
 
-            boolean more = cb.sendBlock(sender, plugin.getSettingsManager().getLinesPerPage());
+            boolean more = cb.sendBlockNoPad(sender, plugin.getSettingsManager().getLinesPerPage());
 
             if (more) {
-                ChatHelper.sendBlank(sender);
                 ChatHelper.send(sender, "moreNextPage");
             }
 
             if (hasPlayer) {
-                ChatHelper.sendBlank(sender);
             }
         }
     }
