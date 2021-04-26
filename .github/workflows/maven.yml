@@ -21,9 +21,9 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
       - run: mvn install
-      - run: mkdir staging && cp target/PreciousStones.jar staging
+      - run: mkdir staging && cp target/DragonStones.jar staging
       - uses: actions/upload-artifact@v2
         with:
-          name: PreciousStones
+          name: DragonStones
           path: staging
  
