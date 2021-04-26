@@ -6,8 +6,8 @@
     <groupId>net.sacredlabyrinth.Phaed</groupId>
     <artifactId>PreciousStones</artifactId>
     <version>1.16.1.14-DragonCraft</version>
-    <name>PreciousStones</name>
-    <url>https://github.com/elBukkit/PreciousStones</url>
+    <name>DragonStones</name>
+    <url>https://github.com/nicknickeryt/DragonStones</url>
 
 
     <properties>

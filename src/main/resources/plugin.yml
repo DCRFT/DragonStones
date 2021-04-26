@@ -1,4 +1,4 @@
-name: PreciousStones
+name: ${project.name}
 authors: [Phaed, NathanWolf, xtomyserrax]
 main: net.sacredlabyrinth.Phaed.PreciousStones.PreciousStones
 version: ${project.version}
