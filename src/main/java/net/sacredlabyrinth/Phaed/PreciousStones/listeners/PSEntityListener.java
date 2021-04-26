@@ -469,6 +469,16 @@ public class PSEntityListener implements Listener {
                     }
                 }
             }
+            else if (player == null) {
+                Field field = plugin.getForceFieldManager().getEnabledSourceField(event.getEntity().getLocation(), FieldFlag.PREVENT_ITEM_FRAME_TAKE);
+
+                if (field != null) {
+                    if (field.hasFlag(FieldFlag.PREVENT_ITEM_FRAME_TAKE)) {
+                        event.setCancelled(true);
+                    }
+                }
+            }
+
         }
 
         if (event.getEntity().getType().equals(EntityType.ARMOR_STAND)) {
