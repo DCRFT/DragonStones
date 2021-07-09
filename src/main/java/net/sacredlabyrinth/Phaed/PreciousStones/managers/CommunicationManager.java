@@ -2119,15 +2119,21 @@ public class CommunicationManager {
             }
             FieldSettings fs = field.getSettings();
 
-            cb.addRow("  " + color + ChatHelper.format("_type") + ": "+ ChatColor.AQUA + fs.getTitle(), "");
+            cb.addRow(" §e» " + color + ChatHelper.format("_type") + " §e» " + ChatColor.AQUA + fs.getTitle(), "§r");
 
-            if (fs.hasNameableFlag() && field.isNamed()) {
-                cb.addRow("  " + color + ChatHelper.format("_name") + ": ", ChatColor.AQUA + field.getName(), "");
+            if (fs.hasNameableFlag()) {
+                if (field.isNamed()) {
+                    cb.addRow(" §e» " + color + ChatHelper.format("_name") + " §e» " + ChatColor.YELLOW + field.getName(), "");
+                } else {
+                    //cb.addRow(" §e» " + color + ChatHelper.format("_name") + ": ", ChatColor.GRAY + ChatHelper.format("_none"), "");
+                }
             }
 
-            cb.addRow("  " + color + ChatHelper.format("_owner") + ": ", ChatColor.AQUA + field.getOwner(), "");
+            cb.addRow(" §e» " + color + ChatHelper.format("_owner") + " §e» §c" + field.getOwner(), "", "");
 
-            cb.addRow("  " + color + ChatHelper.format("_location") + ": ", ChatColor.AQUA + "" + field.getX() + " " + field.getY() + " " + field.getZ(), "");
+            cb.addRow(" §e» " + color + ChatHelper.format("_location") + " §e» " + ChatColor.GOLD + "" + field.getX() + " " + field.getY() + " " + field.getZ(), "");
+
+            cb.addRow(" ", " ", " ");
         }
 
         if (cb.size() > 0) {
@@ -2192,7 +2198,7 @@ public class CommunicationManager {
         }
 
         if (!field.getSettings().getDeleteIfNoPermission().isEmpty()) {
-            cb.addRow(" §e» " + color + ChatHelper.format("_for") + " §e» ", ChatColor.AQUA + "" + field.getSettings().getDeleteIfNoPermission());
+            //cb.addRow(" §e» " + color + ChatHelper.format("_for") + " §e» ", ChatColor.AQUA + "" + field.getSettings().getDeleteIfNoPermission());
         }
 	
         cb.addRow(" §e» " + color + ChatHelper.format("_owner") + " §e» §c" + field.getOwner(), "", "");
