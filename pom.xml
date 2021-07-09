@@ -310,6 +310,10 @@
             <id>bungeecord-repo</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </repository>
+	<repository>
+	    <id>nijikokun</id>
+	    <url>https://maven.enginehub.org/repo</url>
+	</repository>
     </repositories>
 
     <!-- GitHub/Jenkins -->
