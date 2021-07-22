@@ -1607,7 +1607,7 @@ public class PSBlockListener implements Listener {
                 Player player = (Player) event.getPlayer();
 
                 if (FieldFlag.PROTECT_INVENTORIES.applies(field, player)) {
-                    if(!event.getView().getTitle().equalsIgnoreCase(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("ignoreInventory")))){
+                    if(event.getView().getTitle() == null || !event.getView().getTitle().equalsIgnoreCase(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("ignoreInventory")))){
                         event.setCancelled(true);
                         ChatHelper.send(player, "inventoryDeny");
                     }

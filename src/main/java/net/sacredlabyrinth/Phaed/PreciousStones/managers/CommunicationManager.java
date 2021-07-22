@@ -1931,14 +1931,14 @@ public class CommunicationManager {
         if (field == null) {
             return;
         }
-            if (plugin.getSettingsManager().isShowDefaultWelcomeFarewellMessages()) {
-                List<String> renters = field.getRenters();
-                if (renters != null && !renters.isEmpty()) {
-                    ChatHelper.sendActionBar(player, "enteringField", renters.get(0), field.getSettings().getTitle());
-                } else {
-                    ChatHelper.sendActionBar(player, "enteringField", field.getOwner(), field.getSettings().getTitle());
-                }
+        if (plugin.getSettingsManager().isShowDefaultWelcomeFarewellMessages()) {
+            List<String> renters = field.getRenters();
+            if (renters != null && !renters.isEmpty()) {
+                ChatHelper.sendActionBar(player, "enteringField", renters.get(0), field.getSettings().getTitle());
+            } else {
+                ChatHelper.sendActionBar(player, "enteringField", field.getOwner(), field.getSettings().getTitle());
             }
+        }
     }
 
     /**
@@ -1949,14 +1949,14 @@ public class CommunicationManager {
         if (field == null) {
             return;
         }
-            if (plugin.getSettingsManager().isShowDefaultWelcomeFarewellMessages()) {
-                List<String> renters = field.getRenters();
-                if (renters != null && !renters.isEmpty()) {
-                    ChatHelper.sendActionBar(player, "leavingField", renters.get(0), field.getSettings().getTitle());
-                } else {
-                    ChatHelper.sendActionBar(player, "leavingField", field.getOwner(), field.getSettings().getTitle());
-                }
+        if (plugin.getSettingsManager().isShowDefaultWelcomeFarewellMessages()) {
+            List<String> renters = field.getRenters();
+            if (renters != null && !renters.isEmpty()) {
+                ChatHelper.sendActionBar(player, "leavingField", renters.get(0), field.getSettings().getTitle());
+            } else {
+                ChatHelper.sendActionBar(player, "leavingField", field.getOwner(), field.getSettings().getTitle());
             }
+        }
     }
 
     /**
@@ -2200,7 +2200,7 @@ public class CommunicationManager {
         if (!field.getSettings().getDeleteIfNoPermission().isEmpty()) {
             //cb.addRow(" §e» " + color + ChatHelper.format("_for") + " §e» ", ChatColor.AQUA + "" + field.getSettings().getDeleteIfNoPermission());
         }
-	
+
         cb.addRow(" §e» " + color + ChatHelper.format("_owner") + " §e» §c" + field.getOwner(), "", "");
 
         List<String> allowed = field.getAllowed();
@@ -2246,7 +2246,7 @@ public class CommunicationManager {
 
         boolean addedTitle = false;
 
-	//flags deleted
+        //flags deleted
 
         if (cb.size() > 0) {
 
