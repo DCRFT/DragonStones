@@ -147,6 +147,7 @@ public final class SettingsManager {
     private String database;
     private String username;
     private String password;
+    private String ignoreInventory;
     private int port;
     private final HashMap<BlockTypeEntry, FieldSettings> fieldDefinitions = new HashMap<>();
     private File main;
@@ -342,6 +343,7 @@ public final class SettingsManager {
         username = loadString("mysql.username");
         password = loadString("mysql.password");
 
+        ignoreInventory = loadString("ignoreInventory");
         addForceFieldStones(forceFieldBlocks);
 
         save();
@@ -674,11 +676,11 @@ public final class SettingsManager {
                 type == Material.WHITE_BED ||
                 type == Material.YELLOW_BED;
     }
-    
+
     /**
      * Get the new location a block moved by a piston will have
      *
-     * @param type
+     * @param to
      * @return
      */
     public Location getMovedToLocation(Location loc, BlockFace to) {
