@@ -63,7 +63,7 @@
             <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.2.4</version>
+				<version>3.5.0</version>
 				<configuration>
 					<artifactSet>
 						<includes>
@@ -102,7 +102,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.8</version>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <id>copy-jar-to-server</id>
@@ -111,7 +111,7 @@
                             <goal>run</goal>
                         </goals>
                         <configuration>
-                            <tasks>
+                            <target>
                                 <taskdef resource="net/sf/antcontrib/antlib.xml"
                                          classpathref="maven.dependency.classpath"/>
                                 <trycatch>
@@ -126,7 +126,7 @@
                                         <echo>Could not copy jar to server</echo>
                                     </catch>
                                 </trycatch>
-                            </tasks>
+                            </target>
                         </configuration>
                     </execution>
                 </executions>
@@ -292,7 +292,7 @@
         </repository>
         <repository>
             <id>sk89q</id>
-            <url>https://maven.sk89q.com/repo/</url>
+            <url>https://maven.enginehub.org/repo/</url>
         </repository>
         <repository>
             <id>elMakers</id>
@@ -305,10 +305,6 @@
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
-        </repository>
-        <repository>
-            <id>papermc</id>
-            <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
         <repository>
             <id>bungeecord-repo</id>
