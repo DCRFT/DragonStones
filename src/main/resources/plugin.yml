@@ -2,7 +2,7 @@ name: ${project.name}
 authors: [Phaed, NathanWolf, xtomyserrax]
 main: net.sacredlabyrinth.Phaed.PreciousStones.PreciousStones
 version: ${project.version}
-api-version: 1.16
+api-version: 1.20
 dev-url: https://github.com/elBukkit/PreciousStones
 load: 'postworld'
 softdepend: [Permissions, PermissionsBukkit, SimpleClans, Vault, CombatTag, WorldGuard, LWC, Lockette, mcMMO, SCCore, WorldEdit]
@@ -129,8 +129,6 @@ permissions:
     description: Bypasses cuboid size limits
   preciousstones.bypass.interval:
     description: Bypasses interval configured minimum
-  preciousstones.bypass.teleport:
-    description: Bypasses teleport block
   preciousstones.bypass.world:
     description: Bypasses world limitation
   preciousstones.bypass.allowed-only-inside:
