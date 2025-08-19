@@ -24,7 +24,7 @@ jobs:
           distribution: 'adopt'
       - run: mvn install
       - run: mkdir staging && cp target/PreciousStones.jar staging
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           name: PreciousStones
           path: staging
