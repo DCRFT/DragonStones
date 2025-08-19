@@ -167,7 +167,7 @@ public class PSBlockListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onBlockIgnite(BlockIgniteEvent event) {
         if (event.isCancelled()) {
-            return;
+            //return;
         }
 
         Block block = event.getBlock();
@@ -191,6 +191,7 @@ public class PSBlockListener implements Listener {
                     event.setCancelled(true);
                     plugin.getCommunicationManager().warnFire(player, block, field);
                 }
+				else event.setCancelled(false);
             }
         }
 
