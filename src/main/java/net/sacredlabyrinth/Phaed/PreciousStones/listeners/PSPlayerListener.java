@@ -1406,8 +1406,8 @@ public class PSPlayerListener implements Listener {
 		Collection<PotionEffect> effects = potion.getEffects();
 
 		for (PotionEffect effect : effects) {
-			if (effect.getType().equals(PotionEffectType.BLINDNESS) || effect.getType().equals(PotionEffectType.CONFUSION) || effect.getType().equals(PotionEffectType.HARM) || effect.getType().equals(PotionEffectType.POISON) || effect.getType().equals(PotionEffectType.WEAKNESS)
-					|| effect.getType().equals(PotionEffectType.SLOW) || effect.getType().equals(PotionEffectType.SLOW_DIGGING)) {
+			if (effect.getType().equals(PotionEffectType.BLINDNESS) || effect.getType().equals(PotionEffectType.NAUSEA) || effect.getType().equals(PotionEffectType.INSTANT_DAMAGE) || effect.getType().equals(PotionEffectType.POISON) || effect.getType().equals(PotionEffectType.WEAKNESS)
+					|| effect.getType().equals(PotionEffectType.SLOWNESS) || effect.getType().equals(PotionEffectType.MINING_FATIGUE)) {
 				hasHarm = true;
 			}
 		}

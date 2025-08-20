@@ -69,7 +69,7 @@ class TableCreator implements AutoCloseable {
                 + "`maxz` int(11) default NULL, "
 
                 + "`velocity` float default NULL, "
-                + "`type_id` int(11) default NULL, "
+                + "`type_id` varchar(50) default NULL, "
                 + "`data` tinyint default 0, "
                 + "`owner` varchar(16) NOT NULL, "
                 + "`name` varchar(50) NOT NULL, "
@@ -93,7 +93,7 @@ class TableCreator implements AutoCloseable {
                 + "`radius` int(11) default NULL, "
                 + "`height` int(11) default NULL, "
                 + "`velocity` float default NULL, "
-                + "`type_id` int(11) default NULL, "
+                + "`type_id` varchar(50) default NULL, "
 
                 + "`data` tinyint default 0, "
                 + "`owner` varchar(16) NOT NULL, "
@@ -114,7 +114,7 @@ class TableCreator implements AutoCloseable {
                 + "`z` int(11) default NULL, "
                 + "`world` varchar(25) default NULL, "
                 + "`owner` varchar(16) NOT NULL, "
-                + "`type_id` int(11) default NULL, "
+                + "`type_id` varchar(50) default NULL, "
                 + "`data` tinyint default 0, "
                 + ((isMySql) ?
                         "UNIQUE KEY `uq_pstone_unbreakables_1` (`x`,`y`,`z`,`world`))"
@@ -132,7 +132,7 @@ class TableCreator implements AutoCloseable {
                 + "`x` int(11) default NULL, "
                 + "`y` int(11) default NULL, "
                 + "`z` int(11) default NULL, "
-                + "`type_id` int(11) NOT NULL, "
+                + "`type_id` varchar(50) NOT NULL, "
                 + "`data` TINYINT NOT NULL, "
                 + "`sign_text` varchar(75) NOT NULL)");
     }
@@ -160,7 +160,7 @@ class TableCreator implements AutoCloseable {
                 + "`y` int(11) default NULL, "
                 + "`z` int(11) default NULL, "
                 + "`world` varchar(25) NOT NULL, "
-                + "`type_id` int(11) NOT NULL, "
+                + "`type_id` varchar(50) NOT NULL, "
                 + "`data` TINYINT NOT NULL, "
                 + "`sign_text` varchar(75) NOT NULL, "
                 + "`applied` bit default 0, "

@@ -20,8 +20,9 @@ public class MaterialName {
             return Material.valueOf(IDName.toUpperCase());
         } catch (Exception ex) {
             try {
+                // TODO get rid of this
                 int materialId = Integer.parseInt(IDName);
-                Material converted = Helper.getMaterial(materialId);
+                Material converted = Material.getMaterial(IDName);
                 PreciousStones.getLog().warning("Found material id '" + materialId + "' in config. Assuming this means " + converted.name() + " but you should update your configs.");
                 return converted;
             } catch (Exception notint) {

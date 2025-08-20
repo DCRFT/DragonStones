@@ -1,5 +1,9 @@
 package net.sacredlabyrinth.Phaed.PreciousStones.listeners;
 
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.bukkit.event.DelegateEvent;
+import com.sk89q.worldguard.bukkit.listener.WorldGuardBlockListener;
 import net.sacredlabyrinth.Phaed.PreciousStones.PreciousStones;
 import net.sacredlabyrinth.Phaed.PreciousStones.entries.BlockEntry;
 import net.sacredlabyrinth.Phaed.PreciousStones.entries.BlockTypeEntry;
@@ -166,16 +170,13 @@ public class PSBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onBlockIgnite(BlockIgniteEvent event) {
-        if (event.isCancelled()) {
+        // TODO
+        if (event.isCancelled() && event.getCause() != BlockIgniteEvent.IgniteCause.FLINT_AND_STEEL) {
             return;
         }
 
         Block block = event.getBlock();
         Player player = event.getPlayer();
-
-        if (block == null) {
-            return;
-        }
 
         if (player != null) {
             plugin.getSnitchManager().recordSnitchIgnite(player, block);
@@ -190,7 +191,7 @@ public class PSBlockListener implements Listener {
                 if (FieldFlag.PREVENT_FIRE.applies(field, player)) {
                     event.setCancelled(true);
                     plugin.getCommunicationManager().warnFire(player, block, field);
-                }
+                } else event.setCancelled(false);
             }
         }
 
@@ -588,17 +589,14 @@ public class PSBlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (event.isCancelled()) {
+        // TODO
+        if (event.isCancelled() && event.getBlock().getType() != Material.FIRE) {
             return;
         }
 
         final Block block = event.getBlock();
         final Player player = event.getPlayer();
         ItemStack handItem = event.getItemInHand();
-
-        if (block == null) {
-            return;
-        }
 
         if (plugin.getSettingsManager().isBlacklistedWorld(block.getWorld())) {
             // Prevent destorying pstones with meta by trying to place them in a disabled world
@@ -896,6 +894,8 @@ public class PSBlockListener implements Listener {
                             plugin.getCommunicationManager().warnPlace(player, block, field);
                         }
                     }
+                    // DragonCraft: Allow placing fire in your own field, explicitly uncancelling the event (eg. WorldGuard __global__ lighter bypass)
+                    else if (event.getBlock().getType() == Material.FIRE && field.isAllowed(player.getName())) event.setCancelled(false);
                 }
             }
 

@@ -711,7 +711,7 @@ public final class EntryManager {
     }
     
     private double playerMaxHealth(Player p) {
-		return p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
+		return p.getAttribute(Attribute.MAX_HEALTH).getBaseValue();
 	}
 
     private double healthCheck(double health, Player p) {

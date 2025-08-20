@@ -19,6 +19,7 @@ import net.sacredlabyrinth.Phaed.PreciousStones.uuid.UUIDMigration;
 import net.sacredlabyrinth.Phaed.PreciousStones.vectors.Vec;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -395,7 +396,7 @@ public class StorageManager {
                         int z = resultSet.getInt("z");
                         int radius = resultSet.getInt("radius");
                         int height = resultSet.getInt("height");
-                        int type_id = resultSet.getInt("type_id");
+                        String type_id = resultSet.getString("type_id");
                         float velocity = resultSet.getFloat("velocity");
                         String world = resultSet.getString("world");
                         String owner = resultSet.getString("owner");
@@ -404,7 +405,7 @@ public class StorageManager {
                         String packed_allowed = resultSet.getString("packed_allowed");
                         long last_used = resultSet.getLong("last_used");
 
-                        BlockTypeEntry type = new BlockTypeEntry(Helper.getMaterial(type_id));
+                        BlockTypeEntry type = new BlockTypeEntry(Material.getMaterial(type_id));
 
                         Field field = new Field(x, y, z, radius, height, velocity, world, type, owner, name, last_used);
                         field.setPackedAllowed(packed_allowed);
@@ -475,7 +476,7 @@ public class StorageManager {
                     int maxx = resultSet.getInt("maxx");
                     int maxy = resultSet.getInt("maxy");
                     int maxz = resultSet.getInt("maxz");
-                    int type_id = resultSet.getInt("type_id");
+                    String type_id = resultSet.getString("type_id");
                     float velocity = resultSet.getFloat("velocity");
                     String world = resultSet.getString("world");
                     String owner = resultSet.getString("owner");
@@ -484,7 +485,7 @@ public class StorageManager {
                     String packed_allowed = resultSet.getString("packed_allowed");
                     long last_used = resultSet.getLong("last_used");
 
-                    BlockTypeEntry type = new BlockTypeEntry(Helper.getMaterial(type_id));
+                    BlockTypeEntry type = new BlockTypeEntry(Material.getMaterial(type_id));
 
                     Field field = new Field(x, y, z, minx, miny, minz, maxx, maxy, maxz, velocity, world, type, owner, name, last_used);
                     field.setPackedAllowed(packed_allowed);
@@ -536,7 +537,7 @@ public class StorageManager {
                     int maxx = resultSet.getInt("maxx");
                     int maxy = resultSet.getInt("maxy");
                     int maxz = resultSet.getInt("maxz");
-                    int type_id = resultSet.getInt("type_id");
+                    String type_id = resultSet.getString("type_id");
                     float velocity = resultSet.getFloat("velocity");
                     String world = resultSet.getString("world");
                     String owner = resultSet.getString("owner");
@@ -545,7 +546,7 @@ public class StorageManager {
                     String packed_allowed = resultSet.getString("packed_allowed");
                     long last_used = resultSet.getLong("last_used");
 
-                    BlockTypeEntry type = new BlockTypeEntry(Helper.getMaterial(type_id));
+                    BlockTypeEntry type = new BlockTypeEntry(Material.getMaterial(type_id));
 
                     Field field = new Field(x, y, z, minx, miny, minz, maxx, maxy, maxz, velocity, world, type, owner, name, last_used);
                     field.setPackedAllowed(packed_allowed);
@@ -758,11 +759,11 @@ public class StorageManager {
                         int x = resultSet.getInt("x");
                         int y = resultSet.getInt("y");
                         int z = resultSet.getInt("z");
-                        int type_id = resultSet.getInt("type_id");
+                        String type_id = resultSet.getString("type_id");
                         String world = resultSet.getString("world");
                         String owner = resultSet.getString("owner");
 
-                        BlockTypeEntry type = new BlockTypeEntry(Helper.getMaterial(type_id));
+                        BlockTypeEntry type = new BlockTypeEntry(Material.getMaterial(type_id));
 
                         Unbreakable ub = new Unbreakable(x, y, z, world, type, owner);
 
@@ -889,7 +890,7 @@ public class StorageManager {
                     field.getWorld(),
                     field.getMinx(), field.getMiny(), field.getMinz(),
                     field.getMaxx(), field.getMaxy(), field.getMaxz(),
-                    field.getVelocity(), Helper.getMaterialId(field.getMaterial()), 0, field.getOwner(), field.getName(),
+                    field.getVelocity(), field.getMaterial().toString(), 0, field.getOwner(), field.getName(),
                     field.getPackedAllowed(), Helper.getMillis(), field.getFlagsModule().getFlagsAsString()
             };
         } else {
@@ -898,7 +899,7 @@ public class StorageManager {
                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             parameters = new Object[] {
                     field.getX(), field.getY(), field.getZ(), field.getWorld(), field.getRadius(), field.getHeight(), field.getVelocity(),
-                    Helper.getMaterialId(field.getMaterial()), 0, field.getOwner(), field.getName(), field.getPackedAllowed(), Helper.getMillis(),
+                    field.getMaterial().toString(), 0, field.getOwner(), field.getName(), field.getPackedAllowed(), Helper.getMillis(),
                     field.getFlagsModule().getFlagsAsString()
             };
         }
@@ -1016,7 +1017,7 @@ public class StorageManager {
      */
     private void insertUnbreakable(Connection conn, Unbreakable ub) throws SQLException {
         Object[] parameters = new Object[] {ub.getX(), ub.getY(), ub.getZ(), ub.getWorld(),
-                ub.getOwner(), Helper.getMaterialId(ub.getMaterial()), 0};
+                ub.getOwner(), ub.getMaterial().toString(), 0};
 
         try (PreparedStatement prepStmt = conn.prepareStatement(
                         "INSERT INTO `pstone_unbreakables` (`x`, `y`, `z`, `world`, `owner`, `type_id`, `data`) "
@@ -1345,7 +1346,7 @@ public class StorageManager {
      */
     private void insertBlockGrief(Connection conn, Field field, GriefBlock gb) throws SQLException {
         Object[] parameters = new Object[] {Helper.getMillis(), field.getX(), field.getY(), field.getZ(), field.getWorld(),
-                gb.getX(), gb.getY(), gb.getZ(), Helper.getMaterialId(gb.getType()), 0, gb.getSignText()};
+                gb.getX(), gb.getY(), gb.getZ(), gb.getType().toString(), 0, gb.getSignText()};
 
         try (PreparedStatement prepStmt = conn.prepareStatement(
                         "INSERT INTO `pstone_grief_undo` (`date_griefed`, `field_x`, `field_y`, `field_z`, `world`, "
@@ -1393,14 +1394,15 @@ public class StorageManager {
                             int x = resultSet.getInt("x");
                             int y = resultSet.getInt("y");
                             int z = resultSet.getInt("z");
-                            int type_id = resultSet.getInt("type_id");
+                            String type_id = resultSet.getString("type_id");
                             String signText = resultSet.getString("sign_text");
 
-                            BlockTypeEntry type = new BlockTypeEntry(Helper.getMaterial(type_id));
+                            BlockTypeEntry type = new BlockTypeEntry(Material.getMaterial(type_id));
 
                             GriefBlock gb = new GriefBlock(x, y, z, field.getWorld(), type);
 
-                            if (type_id == 0 || type_id == 8 || type_id == 9 || type_id == 10 || type_id == 11) {
+                            Material typeMaterial = Material.getMaterial(type_id);
+                            if (typeMaterial == Material.AIR || typeMaterial == Material.WATER  || typeMaterial == Material.LAVA ) {
                                 gb.setEmpty(true);
                             }
 
@@ -1763,15 +1765,16 @@ public class StorageManager {
                         Location location = new Location(world, x, y, z);
                         location = location.add(field.getLocation());
 
-                        int type_id = resultSet.getInt("type_id");
+                        String type_id = resultSet.getString("type_id");
                         String signText = resultSet.getString("sign_text");
                         String contents = resultSet.getString("contents");
 
-                        BlockTypeEntry type = new BlockTypeEntry(Helper.getMaterial(type_id));
+                        BlockTypeEntry type = new BlockTypeEntry(Material.getMaterial(type_id));
 
                         TranslocationBlock tb = new TranslocationBlock(location, type);
 
-                        if (type_id == 0 || type_id == 8 || type_id == 9 || type_id == 10 || type_id == 11) {
+                        Material typeMaterial = Material.getMaterial(type_id);
+                        if (typeMaterial == Material.AIR || typeMaterial == Material.WATER|| typeMaterial == Material.LAVA) {
                             tb.setEmpty(true);
                         }
 
@@ -1818,15 +1821,16 @@ public class StorageManager {
                         Location location = new Location(world, x, y, z);
                         location = location.add(field.getLocation());
 
-                        int type_id = resultSet.getInt("type_id");
+                        String type_id = resultSet.getString("type_id");
                         String signText = resultSet.getString("sign_text");
                         String contents = resultSet.getString("contents");
 
-                        BlockTypeEntry type = new BlockTypeEntry(Helper.getMaterial(type_id));
+                        BlockTypeEntry type = new BlockTypeEntry(Material.getMaterial(type_id));
 
                         TranslocationBlock tb = new TranslocationBlock(location, type);
 
-                        if (type_id == 0 || type_id == 8 || type_id == 9 || type_id == 10 || type_id == 11) {
+                        Material typeMaterial = Material.getMaterial(type_id);
+                        if (typeMaterial == Material.AIR || typeMaterial == Material.WATER|| typeMaterial == Material.LAVA) {
                             tb.setEmpty(true);
                         }
 
@@ -2099,7 +2103,7 @@ public class StorageManager {
 
             prepStmt.setString(1, playerName);
             prepStmt.setString(2, name);
-            prepStmt.setInt(3, Helper.getMaterialId(block.getMaterial()));
+            prepStmt.setString(3, block.getMaterial().toString());
             synchronized (this) {
                 prepStmt.execute();
                 updateCount = prepStmt.getUpdateCount();

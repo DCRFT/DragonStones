@@ -531,13 +531,13 @@ public final class SettingsManager {
 
     public boolean isHarmfulPotion(PotionEffectType pot) {
         return pot.equals(PotionEffectType.BLINDNESS) ||
-        		pot.equals(PotionEffectType.CONFUSION) ||
-        		pot.equals(PotionEffectType.HARM) ||
+        		pot.equals(PotionEffectType.NAUSEA) ||
+        		pot.equals(PotionEffectType.INSTANT_DAMAGE) ||
         		pot.equals(PotionEffectType.HUNGER) ||
-        		pot.equals(PotionEffectType.INCREASE_DAMAGE) ||
+        		pot.equals(PotionEffectType.STRENGTH) ||
         		pot.equals(PotionEffectType.POISON) ||
-        		pot.equals(PotionEffectType.SLOW) ||
-                pot.equals(PotionEffectType.SLOW_DIGGING) ||
+        		pot.equals(PotionEffectType.SLOWNESS) ||
+                pot.equals(PotionEffectType.MINING_FATIGUE) ||
                 pot.equals(PotionEffectType.UNLUCK) ||
                 pot.equals(PotionEffectType.WEAKNESS);
 

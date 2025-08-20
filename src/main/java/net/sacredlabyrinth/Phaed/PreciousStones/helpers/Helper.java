@@ -913,40 +913,4 @@ public class Helper {
             return String.format("%s", d);
         }
     }
-
-    @SuppressWarnings("deprecation")
-    public static Material getMaterial(int id) {
-        if (materialIdMap == null) {
-            materialIdMap = new HashMap<>();
-
-            Object[] allMaterials = Material.AIR.getDeclaringClass().getEnumConstants();
-            for (Object o : allMaterials) {
-                Material material = (Material)o;
-                materialIdMap.put(getMaterialId(material), material);
-            }
-        }
-        Material material = materialIdMap.get(id);
-        if (material != null && material.isLegacy()) {
-            Material converted = Bukkit.getUnsafe().fromLegacy(material);
-            if (converted != null && converted != Material.AIR) {
-                material = converted;
-            }
-        }
-        return material;
-    }
-
-    @SuppressWarnings("deprecation")
-    public static int getMaterialId(Material material) {
-        int id = -1;
-        try {
-            if (materialIdField == null) {
-                materialIdField = Material.class.getDeclaredField("id");
-                materialIdField.setAccessible(true);
-            }
-            id = (int)materialIdField.get(material);
-        } catch (Exception ex) {
-            org.bukkit.Bukkit.getLogger().log(Level.SEVERE, "PreciousStones failed to hackily workaround Material.getId legacy issues, all is lost, abandon hope", ex);
-        }
-        return id;
-    }
 }

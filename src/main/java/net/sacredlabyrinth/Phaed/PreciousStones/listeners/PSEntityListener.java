@@ -499,7 +499,7 @@ public class PSEntityListener implements Listener {
             }
         }
 
-        if (event.getEntity() instanceof Minecart || event.getEntity().getType().equals(EntityType.PRIMED_TNT) || event.getEntity().getType().equals(EntityType.ENDER_CRYSTAL)) {
+        if (event.getEntity() instanceof Minecart || event.getEntity().getType().equals(EntityType.TNT) || event.getEntity().getType().equals(EntityType.END_CRYSTAL)) {
 
             Player player = Helper.getDamagingPlayer(event);
 
