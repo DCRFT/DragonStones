@@ -1,5 +1,6 @@
 package net.sacredlabyrinth.Phaed.PreciousStones.managers;
 
+import me.chancesd.pvpmanager.PvPManager;
 import net.sacredlabyrinth.Phaed.PreciousStones.PreciousStones;
 import net.sacredlabyrinth.Phaed.PreciousStones.entries.BlockTypeEntry;
 import net.sacredlabyrinth.Phaed.PreciousStones.entries.EntryFields;
@@ -277,7 +278,7 @@ public final class EntryManager {
 
         if (!plugin.getPermissionsManager().has(player, "preciousstones.bypass.entry")) {
             for (Field field : currentFields) {
-                if (FieldFlag.PREVENT_ENTRY.applies(field, player)) {
+                if (FieldFlag.PREVENT_ENTRY.applies(field, player) || (PvPManager.getInstance().getPlayerManager().get(player).isInCombat() && field.hasFlag(FieldFlag.PREVENT_PVP))) {
                     Location loc = plugin.getPlayerManager().getOutsideFieldLocation(field, player);
                     Location outside = plugin.getPlayerManager().getOutsideLocation(player);
 

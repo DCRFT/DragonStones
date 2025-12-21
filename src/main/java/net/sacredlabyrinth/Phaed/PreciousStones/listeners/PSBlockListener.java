@@ -4,6 +4,7 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.bukkit.event.DelegateEvent;
 import com.sk89q.worldguard.bukkit.listener.WorldGuardBlockListener;
+import me.chancesd.pvpmanager.PvPManager;
 import net.sacredlabyrinth.Phaed.PreciousStones.PreciousStones;
 import net.sacredlabyrinth.Phaed.PreciousStones.entries.BlockEntry;
 import net.sacredlabyrinth.Phaed.PreciousStones.entries.BlockTypeEntry;
@@ -1198,6 +1199,14 @@ public class PSBlockListener implements Listener {
 
         if (field != null) {
             ChatHelper.send(player, "translocationNoFields");
+            event.setCancelled(true);
+            return false;
+        }
+
+        // cannot place prevent-pvp field while in pvp
+
+        if(fs.getDefaultFlags().contains(FieldFlag.PREVENT_PVP) && PvPManager.getInstance().getPlayerManager().get(player).isInCombat()) {
+            ChatHelper.send(player, "warnConflictFieldPlace2PvP");
             event.setCancelled(true);
             return false;
         }

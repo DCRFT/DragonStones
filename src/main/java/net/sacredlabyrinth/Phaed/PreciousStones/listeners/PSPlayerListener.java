@@ -1,5 +1,6 @@
 package net.sacredlabyrinth.Phaed.PreciousStones.listeners;
 
+import me.chancesd.pvpmanager.PvPManager;
 import net.sacredlabyrinth.Phaed.PreciousStones.PreciousStones;
 import net.sacredlabyrinth.Phaed.PreciousStones.blocks.TargetBlock;
 import net.sacredlabyrinth.Phaed.PreciousStones.entries.*;
@@ -235,19 +236,8 @@ public class PSPlayerListener implements Listener {
 
 		if (!plugin.getPermissionsManager().has(player, "preciousstones.bypass.entry")) {
 			for (Field futureField : futureFields) {
-				if (FieldFlag.PREVENT_ENTRY.applies(futureField, player)) {
-					Location loc = plugin.getPlayerManager().getOutsideFieldLocation(futureField, player);
-					Location outside = plugin.getPlayerManager().getOutsideLocation(player);
-
-					if (outside != null) {
-						Field f = plugin.getForceFieldManager().getEnabledSourceField(outside, FieldFlag.PREVENT_ENTRY);
-
-						if (f != null) {
-							loc = outside;
-						}
-					}
-
-					event.setTo(loc);
+                if (FieldFlag.PREVENT_ENTRY.applies(field, player) || (PvPManager.getInstance().getPlayerManager().get(player).isInCombat() && Objects.requireNonNull(field).hasFlag(FieldFlag.PREVENT_PVP))) {
+                    event.setCancelled(true);
 					plugin.getCommunicationManager().warnEntry(player, futureField);
 					return;
 				}
@@ -335,19 +325,8 @@ public class PSPlayerListener implements Listener {
 
 		if (!plugin.getPermissionsManager().has(player, "preciousstones.bypass.entry")) {
 			for (Field field : futureFields) {
-				if (FieldFlag.PREVENT_ENTRY.applies(field, player)) {
-					Location loc = plugin.getPlayerManager().getOutsideFieldLocation(field, player);
-					Location outside = plugin.getPlayerManager().getOutsideLocation(player);
-
-					if (outside != null) {
-						Field f = plugin.getForceFieldManager().getEnabledSourceField(outside, FieldFlag.PREVENT_ENTRY);
-
-						if (f != null) {
-							loc = outside;
-						}
-					}
-
-					event.setTo(loc);
+                if (FieldFlag.PREVENT_ENTRY.applies(field, player) || (PvPManager.getInstance().getPlayerManager().get(player).isInCombat() && field.hasFlag(FieldFlag.PREVENT_PVP))) {
+                    event.setCancelled(true);
 					plugin.getCommunicationManager().warnEntry(player, field);
 					return;
 				}
