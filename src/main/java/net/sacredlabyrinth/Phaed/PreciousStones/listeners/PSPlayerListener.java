@@ -236,7 +236,7 @@ public class PSPlayerListener implements Listener {
 
 		if (!plugin.getPermissionsManager().has(player, "preciousstones.bypass.entry")) {
 			for (Field futureField : futureFields) {
-                if (FieldFlag.PREVENT_ENTRY.applies(field, player) || (PvPManager.getInstance().getPlayerManager().get(player).isInCombat() && Objects.requireNonNull(field).hasFlag(FieldFlag.PREVENT_PVP))) {
+                if (FieldFlag.PREVENT_ENTRY.applies(futureField, player) || (PvPManager.getInstance().getPlayerManager().get(player).isInCombat() && (futureField != null && futureField.hasFlag(FieldFlag.PREVENT_PVP)))) {
                     event.setCancelled(true);
 					plugin.getCommunicationManager().warnEntry(player, futureField);
 					return;
